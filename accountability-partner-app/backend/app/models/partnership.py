@@ -1,11 +1,10 @@
 """Partnership model."""
-from sqlalchemy import Column, String, Integer, Float, Date, ForeignKey, ARRAY, Text, CheckConstraint
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy import Column, String, Integer, Float, Date, DateTime, ForeignKey, Text, CheckConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from datetime import datetime, timedelta
 import uuid
-from app.database import Base
+from app.database import Base, GUID, JSONB, ARRAY
 
 
 class Partnership(Base):
@@ -14,11 +13,11 @@ class Partnership(Base):
     __tablename__ = "partnerships"
 
     # Primary key
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(GUID, primary_key=True, default=uuid.uuid4)
 
     # Partners
-    user1_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
-    user2_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    user1_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    user2_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
 
     # Partnership metadata
     status = Column(String(50), default="active", index=True)  # 'pending', 'active', 'completed', 'cancelled'
@@ -37,16 +36,16 @@ class Partnership(Base):
     # Health metrics
     balance_score = Column(Float, default=0.5)  # 0 (user1 gives more) to 1 (user2 gives more)
     engagement_score = Column(Float, default=0.0)  # 0 (inactive) to 1 (highly engaged)
-    last_interaction_at = Column(Date)
+    last_interaction_at = Column(DateTime)
 
     # Anti-ghosting
-    user1_last_active_at = Column(Date, server_default=func.now())
-    user2_last_active_at = Column(Date, server_default=func.now())
+    user1_last_active_at = Column(DateTime, server_default=func.now())
+    user2_last_active_at = Column(DateTime, server_default=func.now())
     nudge_count = Column(Integer, default=0)
 
     # Timestamps
-    created_at = Column(Date, server_default=func.now())
-    updated_at = Column(Date, server_default=func.now(), onupdate=func.now())
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     # Constraints
     __table_args__ = (

@@ -1,11 +1,10 @@
 """User and UserProfile models."""
-from sqlalchemy import Column, String, Boolean, Date, Integer, Float, ARRAY, Text, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy import Column, String, Boolean, Date, DateTime, Integer, Float, Text, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from datetime import datetime
 import uuid
-from app.database import Base
+from app.database import Base, GUID, ARRAY, JSONB
 
 
 class User(Base):
@@ -14,7 +13,7 @@ class User(Base):
     __tablename__ = "users"
 
     # Primary key
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(GUID, primary_key=True, default=uuid.uuid4)
 
     # Authentication
     email = Column(String(255), unique=True, nullable=False, index=True)
@@ -39,9 +38,9 @@ class User(Base):
     streak_count = Column(Integer, default=0)
 
     # Timestamps
-    created_at = Column(Date, server_default=func.now())
-    updated_at = Column(Date, server_default=func.now(), onupdate=func.now())
-    last_login_at = Column(Date)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+    last_login_at = Column(DateTime)
 
     # Relationships
     profile = relationship("UserProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
@@ -61,8 +60,8 @@ class UserProfile(Base):
     __tablename__ = "user_profiles"
 
     # Primary key
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    id = Column(GUID, primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
     # Strengths & Struggles (arrays)
     strengths = Column(ARRAY(Text), default=[])
@@ -90,8 +89,8 @@ class UserProfile(Base):
     reciprocity_score = Column(Float, default=0.5)  # 0 (takes) to 1 (gives)
 
     # Timestamps
-    created_at = Column(Date, server_default=func.now())
-    updated_at = Column(Date, server_default=func.now(), onupdate=func.now())
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     # Relationships
     user = relationship("User", back_populates="profile")

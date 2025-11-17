@@ -1,10 +1,9 @@
 """Task model."""
-from sqlalchemy import Column, String, Date, Text, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, Date, DateTime, Text, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import uuid
-from app.database import Base
+from app.database import Base, GUID
 
 
 class Task(Base):
@@ -13,10 +12,10 @@ class Task(Base):
     __tablename__ = "tasks"
 
     # Primary key
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    partnership_id = Column(UUID(as_uuid=True), ForeignKey("partnerships.id", ondelete="CASCADE"), nullable=False, index=True)
-    assigned_by_user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    assigned_to_user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    id = Column(GUID, primary_key=True, default=uuid.uuid4)
+    partnership_id = Column(GUID, ForeignKey("partnerships.id", ondelete="CASCADE"), nullable=False, index=True)
+    assigned_by_user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    assigned_to_user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
 
     # Task details
     title = Column(String(200), nullable=False)
@@ -25,12 +24,12 @@ class Task(Base):
 
     # Completion
     status = Column(String(50), default="pending")  # 'pending', 'completed', 'skipped'
-    completed_at = Column(Date)
+    completed_at = Column(DateTime)
     completion_proof_url = Column(Text)  # S3 URL for photo/voice proof
 
     # Metadata
     due_date = Column(Date)
-    created_at = Column(Date, server_default=func.now())
+    created_at = Column(DateTime, server_default=func.now())
 
     # Relationships
     partnership = relationship("Partnership", back_populates="tasks")
