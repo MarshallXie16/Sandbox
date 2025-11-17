@@ -21,6 +21,7 @@ class MatchQueue(Base):
 
     # Match attempts (JSONB)
     proposed_matches = Column(JSONB, default=[])
+    declined_user_ids = Column(JSONB, default=[])  # List of declined user IDs
 
     # Timestamps
     created_at = Column(DateTime, server_default=func.now())
