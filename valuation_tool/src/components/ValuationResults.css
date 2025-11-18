@@ -1,0 +1,381 @@
+/* Valuation Results Styles */
+
+.valuation-results-container {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Results Header */
+.results-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.results-header h1 {
+  font-size: 2rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.business-name {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Main Result Card */
+.main-result {
+  margin-bottom: 2rem;
+}
+
+.result-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2.5rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.result-label {
+  font-size: 1rem;
+  opacity: 0.9;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.result-value {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 1rem 0;
+  line-height: 1;
+}
+
+/* Confidence Badges */
+.confidence-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-top: 1rem;
+}
+
+.confidence-badge.small {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.confidence-high {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #d1fae5;
+}
+
+.confidence-medium {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #fef3c7;
+}
+
+.confidence-low {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #fee2e2;
+}
+
+.confidence-description {
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+  opacity: 0.95;
+  line-height: 1.6;
+}
+
+/* Calculation Breakdown */
+.calculation-breakdown {
+  margin: 2rem 0;
+  padding: 2rem;
+  background-color: #f8fafc;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.calculation-breakdown h2 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.breakdown-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.breakdown-section h3 {
+  font-size: 1.125rem;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.breakdown-section p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.calculation-formula {
+  font-family: 'Courier New', monospace;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.assumptions-list {
+  list-style-position: inside;
+  color: var(--text-secondary);
+}
+
+.assumptions-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.assumptions-list li:last-child {
+  border-bottom: none;
+}
+
+/* Comparison Section */
+.comparison-section {
+  margin: 2rem 0;
+  padding: 2rem;
+  background-color: white;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--border-color);
+}
+
+.comparison-section h2 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.comparison-intro {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.comparison-card {
+  padding: 1.5rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.comparison-card.active {
+  border-color: var(--primary-color);
+  background-color: #eff6ff;
+  box-shadow: var(--shadow-md);
+}
+
+.comparison-card h3 {
+  font-size: 1.125rem;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.comparison-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0.75rem 0;
+}
+
+.comparison-desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 0.75rem;
+}
+
+/* Valuation Range */
+.valuation-range {
+  background-color: #f8fafc;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  margin-top: 1.5rem;
+}
+
+.valuation-range h3 {
+  font-size: 1.125rem;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.valuation-range p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.range-note {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+/* Next Steps */
+.next-steps {
+  margin: 2rem 0;
+}
+
+.next-steps h2 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.next-steps-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.step-card {
+  padding: 1.5rem;
+  background-color: #f8fafc;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.step-card h3 {
+  font-size: 1.125rem;
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.step-card p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.9375rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+/* Disclaimer Box */
+.disclaimer-box {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #fef3c7;
+  border-left: 4px solid var(--warning-color);
+  border-radius: var(--border-radius);
+}
+
+.disclaimer-box h3 {
+  font-size: 1.125rem;
+  color: #78350f;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.disclaimer-box p {
+  color: #78350f;
+  line-height: 1.6;
+  font-size: 0.9375rem;
+  margin-bottom: 0.75rem;
+}
+
+.disclaimer-box p:last-child {
+  margin-bottom: 0;
+}
+
+/* Error Result */
+.error-result {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.error-result h2 {
+  font-size: 1.75rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.error-result .error-message {
+  font-size: 1.125rem;
+  color: var(--danger-color);
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #fee2e2;
+  border-radius: var(--border-radius);
+  display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .valuation-results-container {
+    padding: 1.5rem;
+  }
+
+  .result-value {
+    font-size: 2.25rem;
+  }
+
+  .results-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .comparison-grid,
+  .next-steps-content {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .valuation-results-container {
+    padding: 1rem;
+  }
+
+  .result-card {
+    padding: 1.5rem;
+  }
+
+  .result-value {
+    font-size: 1.875rem;
+  }
+
+  .calculation-breakdown,
+  .comparison-section {
+    padding: 1rem;
+  }
+}
