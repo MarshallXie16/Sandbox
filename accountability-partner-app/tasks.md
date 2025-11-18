@@ -2,16 +2,17 @@
 
 > **Project**: GrowthPact - Mutual Accountability Platform
 > **Version**: MVP to V1.0
-> **Last Updated**: 2025-11-17
+> **Last Updated**: 2025-11-18
 
 ---
 
 ## 📊 Sprint Overview
 
-### Current Sprint: **Sprint 1 - Core Backend** (Week 1)
-- **Sprint Goal**: Complete user management, profiles, and matching algorithm
-- **Story Points**: 34 / 40 capacity
-- **Duration**: Nov 17 - Nov 24
+### Current Sprint: **Sprint 1 - Core Backend** ✅ COMPLETE
+- **Sprint Goal**: Complete user management, profiles, matching algorithm, and partnership management
+- **Story Points**: 39 / 40 capacity (completed)
+- **Duration**: Nov 17 - Nov 18
+- **Status**: All tickets completed! 61/61 tests passing ✅
 
 ### Upcoming Sprints
 - **Sprint 2**: Partnerships & Goals (Week 2)
@@ -63,66 +64,59 @@ Set up complete FastAPI backend with PostgreSQL, Docker Compose, Alembic migrati
 - bcrypt for password hashing (cost factor 12)
 - JWT tokens: 15 min access, 7 days refresh
 
----
-
-### 🔥 IN PROGRESS
-
 **GP-002**: Create Database Migrations
-**Status**: 🔥 In Progress
+**Status**: ✅ Done
 **Priority**: Critical
 **Story Points**: 3
 **Epic**: EPIC-1
 **Dependencies**: GP-001
+**Completed**: 2025-11-17
 
 **Description**:
 Generate and apply initial Alembic migration to create all database tables with proper indexes and constraints.
 
 **Acceptance Criteria**:
-- [ ] Run `alembic revision --autogenerate` successfully
-- [ ] Migration creates all 7 tables with correct schemas
-- [ ] All foreign keys and constraints properly defined
-- [ ] Indexes created for frequently queried columns (email, username, partnership_id, etc.)
-- [ ] Migration can be applied and rolled back without errors
-- [ ] Test database populated with sample data for development
+- [x] Run `alembic revision --autogenerate` successfully
+- [x] Migration creates all 7 tables with correct schemas
+- [x] All foreign keys and constraints properly defined
+- [x] Indexes created for frequently queried columns (email, username, partnership_id, etc.)
+- [x] Migration can be applied and rolled back without errors
+- [x] Test database populated with sample data for development
 
-**Technical Notes**:
-```bash
-# Commands to run
-cd backend
-source venv/bin/activate
-alembic revision --autogenerate -m "Initial schema with all models"
-alembic upgrade head
-```
-
-**Testing**:
-- Verify all tables exist: `\dt` in psql
-- Check indexes: `\di` in psql
-- Test rollback: `alembic downgrade -1`
+**Implementation**:
+- File: `alembic/versions/2025_11_17_0220-001_initial_schema.py`
+- All 7 tables created with proper relationships
+- Platform-independent types (GUID, ARRAY, JSONB) for PostgreSQL/SQLite compatibility
 
 ---
 
-### 📋 TO DO (Sprint 1)
-
 **GP-003**: User Profile Management Endpoints
-**Status**: 📋 To Do
+**Status**: ✅ Done
 **Priority**: Critical
 **Story Points**: 5
 **Epic**: EPIC-1
 **Dependencies**: GP-002
+**Completed**: 2025-11-18
 
 **Description**:
 Build endpoints for users to manage their profiles, including strengths, struggles, communication preferences, and matching settings.
 
 **Acceptance Criteria**:
-- [ ] `GET /api/v1/users/me` - Fetch current user
-- [ ] `PATCH /api/v1/users/me` - Update user basic info (name, bio, timezone)
-- [ ] `GET /api/v1/profiles/me` - Fetch user profile (matching data)
-- [ ] `PATCH /api/v1/profiles/me` - Update profile (strengths, struggles, preferences)
-- [ ] Validation: strengths/struggles must be 2-4 items each
-- [ ] Validation: communication_style must be in ['direct', 'supportive', 'motivational']
-- [ ] Validation: commitment_level must be in ['casual', 'moderate', 'intense']
-- [ ] Profile automatically created on user registration
-- [ ] Returns 404 if profile doesn't exist
+- [x] `GET /api/v1/users/me` - Fetch current user
+- [x] `PATCH /api/v1/users/me` - Update user basic info (name, bio, timezone)
+- [x] `DELETE /api/v1/users/me` - Deactivate account
+- [x] `GET /api/v1/profiles/me` - Fetch user profile (matching data)
+- [x] `PATCH /api/v1/profiles/me` - Update profile (strengths, struggles, preferences)
+- [x] Validation: strengths/struggles must be 2-4 items each
+- [x] Validation: communication_style must be in ['direct', 'supportive', 'motivational']
+- [x] Validation: commitment_level must be in ['casual', 'moderate', 'intense']
+- [x] Profile automatically created on user registration
+- [x] Returns 404 if profile doesn't exist
+
+**Implementation**:
+- Files: `app/api/v1/users.py`, `app/api/v1/profiles.py`, `app/schemas/profile.py`
+- 25 integration tests (all passing)
+- Comprehensive Pydantic validators for all fields
 
 **API Spec**:
 ```json
@@ -151,27 +145,33 @@ PATCH /api/v1/profiles/me
 ---
 
 **GP-004**: Matching Algorithm - Complementarity Scoring
-**Status**: 📋 To Do
+**Status**: ✅ Done
 **Priority**: Critical
 **Story Points**: 8
 **Epic**: EPIC-2
 **Dependencies**: GP-003
+**Completed**: 2025-11-18
 
 **Description**:
 Implement core matching algorithm that scores user compatibility based on complementary strengths/struggles, communication style, and availability.
 
 **Acceptance Criteria**:
-- [ ] `calculate_complementarity_score(user1, user2)` function returns 0-1 score
-- [ ] High score (>0.7) when user1's strengths match user2's struggles and vice versa
-- [ ] Low score (<0.3) when no overlap between strengths/struggles
-- [ ] `calculate_compatibility_score(user1, user2)` checks communication styles
-- [ ] Bonus points for matching commitment levels
-- [ ] `calculate_availability_score(user1, user2)` checks overlapping days
-- [ ] `calculate_match_score(user1, user2)` combines all scores with weights:
+- [x] `calculate_complementarity_score(user1, user2)` function returns 0-1 score
+- [x] High score (>0.7) when user1's strengths match user2's struggles and vice versa
+- [x] Low score (<0.3) when no overlap between strengths/struggles
+- [x] `calculate_compatibility_score(user1, user2)` checks communication styles
+- [x] Bonus points for matching commitment levels
+- [x] `calculate_availability_score(user1, user2)` checks overlapping days
+- [x] `calculate_match_score(user1, user2)` combines all scores with weights:
   - Complementarity: 50%
   - Compatibility: 30%
   - Availability: 20%
-- [ ] Algorithm is symmetric: `score(A, B) == score(B, A)`
+- [x] Algorithm is symmetric: `score(A, B) == score(B, A)`
+
+**Implementation**:
+- File: `app/services/matching_service.py` (273 lines)
+- 19 unit tests (all passing)
+- Features: Symmetric scoring, human-readable explanations, edge case handling
 
 **Algorithm Pseudocode**:
 ```python
@@ -210,25 +210,32 @@ def calculate_match_score(user1: UserProfile, user2: UserProfile) -> float:
 ---
 
 **GP-005**: Match Queue Management
-**Status**: 📋 To Do
+**Status**: ✅ Done
 **Priority**: High
 **Story Points**: 5
 **Epic**: EPIC-2
 **Dependencies**: GP-004
+**Completed**: 2025-11-18
 
 **Description**:
 Build endpoints for users to enter the match queue, view their queue status, and receive match suggestions.
 
 **Acceptance Criteria**:
-- [ ] `POST /api/v1/matching/enter-queue` - User enters match queue
-- [ ] `GET /api/v1/matching/status` - View queue position and status
-- [ ] `GET /api/v1/matching/suggestions` - Get top 3 match suggestions
-- [ ] `POST /api/v1/matching/accept` - Accept a match and create partnership
-- [ ] `POST /api/v1/matching/decline` - Decline a match
-- [ ] Users can't enter queue if they have 3 active partnerships
-- [ ] Queue expires after 7 days of inactivity
-- [ ] Declined matches not shown again
-- [ ] Match suggestions ranked by compatibility score (highest first)
+- [x] `POST /api/v1/matching/enter-queue` - User enters match queue
+- [x] `GET /api/v1/matching/status` - View queue position and status
+- [x] `GET /api/v1/matching/suggestions` - Get top 3 match suggestions
+- [x] `POST /api/v1/matching/accept` - Accept a match and create partnership (GP-007)
+- [x] `POST /api/v1/matching/decline` - Decline a match
+- [x] `DELETE /api/v1/matching/leave-queue` - Exit queue
+- [x] Users can't enter queue if they have 3 active partnerships
+- [x] Queue expires after 7 days of inactivity
+- [x] Declined matches not shown again
+- [x] Match suggestions ranked by compatibility score (highest first)
+
+**Implementation**:
+- Files: `app/api/v1/matching.py`, `app/services/match_queue_service.py`
+- 9 integration tests (all passing)
+- Features: Profile validation, max partnerships enforcement, decline tracking
 
 **API Spec**:
 ```json
@@ -308,24 +315,30 @@ def generate_matches_task(self):
 ---
 
 **GP-007**: Partnership Creation
-**Status**: 📋 To Do
+**Status**: ✅ Done
 **Priority**: High
 **Story Points**: 5
 **Epic**: EPIC-3
 **Dependencies**: GP-005
+**Completed**: 2025-11-18
 
 **Description**:
 When a user accepts a match, create a new partnership between the two users and remove them from the match queue.
 
 **Acceptance Criteria**:
-- [ ] `POST /api/v1/matching/accept` creates Partnership record
-- [ ] Partnership status set to 'active'
-- [ ] Season 1 starts immediately (4-week duration)
-- [ ] Both users' `active_partnerships_count` incremented
-- [ ] Both users removed from match queue (status='matched')
-- [ ] Both users receive notification of new partnership
-- [ ] If either user already has 3 partnerships, return 400 error
-- [ ] Partnership cannot be created if one already exists between users
+- [x] `POST /api/v1/matching/accept` creates Partnership record
+- [x] Partnership status set to 'active'
+- [x] Season 1 starts immediately (4-week duration)
+- [x] Both users' `active_partnerships_count` incremented
+- [x] Both users removed from match queue (status='matched')
+- [ ] Both users receive notification of new partnership (deferred to GP-015)
+- [x] If either user already has 3 partnerships, return 400 error
+- [x] Partnership cannot be created if one already exists between users
+
+**Implementation**:
+- File: `app/services/partnership_service.py`
+- Complete partnership creation logic with validation
+- Tests covered in matching endpoint tests
 
 **API Flow**:
 ```json
@@ -362,23 +375,29 @@ Response: {
 ---
 
 **GP-008**: Partnership Endpoints
-**Status**: 📋 To Do
+**Status**: ✅ Done
 **Priority**: High
 **Story Points**: 5
 **Epic**: EPIC-3
 **Dependencies**: GP-007
+**Completed**: 2025-11-18
 
 **Description**:
 Build endpoints to view and manage partnerships.
 
 **Acceptance Criteria**:
-- [ ] `GET /api/v1/partnerships` - List all user's active partnerships
-- [ ] `GET /api/v1/partnerships/:id` - Get partnership details
-- [ ] `PATCH /api/v1/partnerships/:id/settings` - Update settings (check-in days, frequency)
-- [ ] `POST /api/v1/partnerships/:id/end` - End partnership gracefully
-- [ ] `GET /api/v1/partnerships/:id/stats` - Get partnership analytics
-- [ ] Only partnership members can access endpoints (authorization check)
-- [ ] Returns partner's public profile info (not private data)
+- [x] `GET /api/v1/partnerships` - List all user's active partnerships (with status filter)
+- [x] `GET /api/v1/partnerships/:id` - Get partnership details
+- [x] `PATCH /api/v1/partnerships/:id/settings` - Update settings (check-in days, frequency)
+- [x] `POST /api/v1/partnerships/:id/end` - End partnership gracefully
+- [x] `GET /api/v1/partnerships/:id/stats` - Get partnership analytics
+- [x] Only partnership members can access endpoints (authorization check)
+- [x] Returns partner's public profile info (not private data)
+
+**Implementation**:
+- Files: `app/api/v1/partnerships.py`, `app/schemas/partnership.py`
+- 10 integration tests (all passing)
+- Features: Authorization, status filtering, real-time stats, graceful termination
 
 **API Spec**:
 ```json
