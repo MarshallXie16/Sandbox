@@ -1,0 +1,6 @@
+email,name,segment,company_name,industry,target_revenue,location
+john.buyer@example.com,John Smith,buyer,Smith Capital,"Technology","$1M-5M","San Francisco, CA"
+sarah.investor@example.com,Sarah Johnson,investor,Johnson Ventures,"SaaS","$500K-2M","New York, NY"
+mike.acquirer@example.com,Mike Williams,buyer,Williams Holdings,"E-commerce","$2M-10M","Austin, TX"
+emma.capital@example.com,Emma Davis,investor,Davis Fund,"Healthcare","$5M+","Boston, MA"
+robert.buyer@example.com,Robert Brown,buyer,,"Manufacturing","$1M-3M","Chicago, IL"

@@ -1,0 +1,6 @@
+email,name,segment,company_name,industry,annual_revenue,years_in_business,location
+alice.founder@example.com,Alice Martinez,seller,TechFlow Solutions,SaaS,"$2.5M",8,"Seattle, WA"
+david.owner@example.com,David Chen,seller,Chen Manufacturing,Manufacturing,"$5M",15,"Denver, CO"
+lisa.ceo@example.com,Lisa Anderson,seller,EcoProducts Inc,E-commerce,"$1.2M",5,"Portland, OR"
+james.entrepreneur@example.com,James Taylor,seller,Taylor Consulting,Services,"$800K",10,"Nashville, TN"
+maria.business@example.com,Maria Garcia,seller,Garcia Retail Group,Retail,"$3M",12,"Miami, FL"

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Business</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px;">
+        <h2 style="color: #2c3e50; margin-top: 0;">Hi {{ first_name|default('there') }},</h2>
+
+        {% if company_name %}
+        <p>I came across <strong>{{ company_name }}</strong> and was impressed by what you've built{% if industry %} in the {{ industry }} space{% endif %}.</p>
+        {% else %}
+        <p>I hope this email finds you well. I'm reaching out from <strong>Capital Ink Hub</strong>, where we help business owners successfully exit their companies.</p>
+        {% endif %}
+
+        <p>Many business owners I work with are contemplating their next chapter, and I wanted to reach out in case you've ever considered what an exit might look like for your business.</p>
+
+        <div style="background-color: white; padding: 15px; border-left: 4px solid #27ae60; margin: 20px 0;">
+            <h3 style="margin-top: 0; color: #27ae60;">How We Help Sellers</h3>
+            <ul style="margin: 10px 0;">
+                <li>Confidential business valuations</li>
+                <li>Access to our network of qualified buyers</li>
+                <li>Expert negotiation and deal structuring</li>
+                <li>Guidance through due diligence and closing</li>
+            </ul>
+        </div>
+
+        <p>Whether you're actively looking to sell or just exploring your options, I'd be happy to provide a complimentary, confidential assessment of what your business might be worth in today's market.</p>
+
+        <p>No obligation – just a conversation to explore possibilities.</p>
+
+        <p>Would you be open to a brief call to discuss?</p>
+
+        <p style="margin-top: 30px;">
+            Best regards,<br>
+            <strong>{{ sender_name|default('The Capital Ink Hub Team') }}</strong><br>
+            <a href="https://m.capitalinkhub.com" style="color: #27ae60; text-decoration: none;">m.capitalinkhub.com</a>
+        </p>
+
+        <div style="border-top: 1px solid #ddd; margin-top: 30px; padding-top: 15px; font-size: 12px; color: #777;">
+            <p>This is a one-time outreach. If you're not interested, no worries – you won't hear from us again.</p>
+        </div>
+    </div>
+</body>
+</html>
