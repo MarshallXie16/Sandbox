@@ -1,0 +1,212 @@
+# Scoring Rules Configuration for Indie Matching Engine
+# This file defines how buyer-listing matches are scored
+
+# Component Weights (total should roughly equal 100 for percentage-based scoring)
+weights:
+  # Industry matching
+  industry_exact: 30          # Exact industry match
+  industry_related: 15        # Related industry match
+  industry_mismatch: 0        # No industry match
+
+  # Geographic/Region matching
+  region_exact: 20            # Exact region match
+  region_nearby: 10           # Nearby/related region
+  region_mismatch: 0          # Different region
+
+  # Deal size alignment
+  deal_size_perfect: 25       # Within buyer's preferred range
+  deal_size_acceptable: 15    # Slightly outside range but close
+  deal_size_stretch: 5        # Outside range but possibly acceptable
+  deal_size_mismatch: -10     # Way outside buyer's budget
+
+  # Experience matching
+  experience_strong: 10       # Buyer has strong relevant experience
+  experience_moderate: 5      # Some relevant experience
+  experience_minimal: 0       # Little to no relevant experience
+
+  # Engagement boost
+  engagement_high: 10         # High engagement score (>75)
+  engagement_medium: 5        # Medium engagement (50-75)
+  engagement_low: 0           # Low engagement (<50)
+
+# Minimum score thresholds
+thresholds:
+  min_recommendation_score: 40    # Minimum score to be recommended
+  high_quality_match: 70          # Considered a high-quality match
+  perfect_match: 85               # Nearly perfect match
+
+# Industry relationship mapping
+# Defines which industries are considered "related" to each other
+industry_relations:
+  software:
+    - it_services
+    - saas
+    - technology
+    - consulting
+
+  manufacturing:
+    - distribution
+    - logistics
+    - supply_chain
+    - industrial
+
+  healthcare:
+    - medical_services
+    - wellness
+    - senior_care
+    - home_health
+
+  food_beverage:
+    - restaurant
+    - catering
+    - food_service
+    - hospitality
+
+  retail:
+    - ecommerce
+    - franchise
+    - consumer_goods
+    - distribution
+
+  services:
+    - consulting
+    - professional_services
+    - business_services
+    - b2b_services
+
+  real_estate:
+    - property_management
+    - construction
+    - facilities
+    - commercial_real_estate
+
+# Geographic region relationships
+# Defines which regions are considered "nearby" or related
+region_relations:
+  BC:
+    - Western Canada
+    - Pacific Northwest
+    - Alberta
+
+  Alberta:
+    - Western Canada
+    - BC
+    - Saskatchewan
+
+  Ontario:
+    - Central Canada
+    - Eastern Canada
+    - Quebec
+
+  Quebec:
+    - Eastern Canada
+    - Central Canada
+    - Ontario
+
+  "Western Canada":
+    - BC
+    - Alberta
+    - Saskatchewan
+    - Manitoba
+
+  "Eastern Canada":
+    - Ontario
+    - Quebec
+    - Atlantic Canada
+
+  USA:
+    - International
+    - North America
+
+  International:
+    - USA
+    - Global
+
+# Deal size bands for matching
+# Used to categorize deals and match with buyer preferences
+deal_size_bands:
+  micro:
+    min: 0
+    max: 100000
+    label: "Micro (<$100K)"
+
+  small:
+    min: 100000
+    max: 500000
+    label: "Small ($100K-$500K)"
+
+  mid:
+    min: 500000
+    max: 2000000
+    label: "Mid ($500K-$2M)"
+
+  upper_mid:
+    min: 2000000
+    max: 5000000
+    label: "Upper Mid ($2M-$5M)"
+
+  large:
+    min: 5000000
+    max: 20000000
+    label: "Large ($5M-$20M)"
+
+  enterprise:
+    min: 20000000
+    max: null
+    label: "Enterprise (>$20M)"
+
+# Deal size tolerance (percentage)
+# How much outside the range is still acceptable
+deal_size_tolerance:
+  perfect: 0.0      # Within range
+  acceptable: 0.2   # Up to 20% outside range
+  stretch: 0.5      # Up to 50% outside range
+  # Beyond 50% is considered mismatch
+
+# Experience level mappings
+experience_levels:
+  first_time:
+    value: 0
+    label: "First-time Buyer"
+
+  some_experience:
+    value: 1
+    label: "Some Experience"
+
+  experienced:
+    value: 2
+    label: "Experienced"
+
+  serial:
+    value: 3
+    label: "Serial Entrepreneur"
+
+# Engagement score thresholds
+engagement_thresholds:
+  high: 75
+  medium: 50
+  low: 0
+
+# Explanation templates
+# Used to generate human-readable match explanations
+explanation_templates:
+  industry_exact: "Perfect industry match: {buyer_industry} matches {listing_industry}"
+  industry_related: "Related industries: {buyer_industry} is related to {listing_industry}"
+  industry_mismatch: "Industry mismatch: buyer interested in {buyer_industry}, listing is {listing_industry}"
+
+  region_exact: "Same region: {region}"
+  region_nearby: "Nearby regions: {buyer_region} and {listing_region}"
+  region_mismatch: "Different regions: buyer prefers {buyer_region}, listing in {listing_region}"
+
+  deal_size_perfect: "Deal size ${deal_size} is within buyer's range (${min_budget}-${max_budget})"
+  deal_size_acceptable: "Deal size ${deal_size} is close to buyer's range (${min_budget}-${max_budget})"
+  deal_size_stretch: "Deal size ${deal_size} is a stretch for buyer's budget (${min_budget}-${max_budget})"
+  deal_size_mismatch: "Deal size ${deal_size} is outside buyer's budget (${min_budget}-${max_budget})"
+
+  experience_strong: "Buyer has strong experience in this industry"
+  experience_moderate: "Buyer has some relevant experience"
+  experience_minimal: "Buyer is new to this industry"
+
+  engagement_high: "Buyer is highly engaged (score: {score})"
+  engagement_medium: "Buyer shows moderate engagement (score: {score})"
+  engagement_low: "Limited recent engagement (score: {score})"
