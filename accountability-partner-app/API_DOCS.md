@@ -366,14 +366,150 @@ Sets queue status to `cancelled`. Can re-enter anytime.
 
 ## Partnerships
 
-*(Coming in GP-008)*
+All endpoints require `Authorization: Bearer <access_token>` header.
+Only partnership members can access partnership data (authorization enforced).
 
-Endpoints will include:
-- `GET /partnerships` - List user's partnerships
-- `GET /partnerships/:id` - Get partnership details
-- `PATCH /partnerships/:id/settings` - Update settings
-- `POST /partnerships/:id/end` - End partnership
-- `GET /partnerships/:id/stats` - Analytics
+### List Partnerships
+```http
+GET /api/v1/partnerships?status=active
+Authorization: Bearer <access_token>
+```
+
+**Query Parameters**:
+- `status` (optional): Filter by status (`active`, `completed`, `cancelled`)
+
+**Response (200)**:
+```json
+{
+  "partnerships": [
+    {
+      "id": "partnership-uuid",
+      "partner": {
+        "id": "partner-uuid",
+        "username": "mike_fitness",
+        "full_name": "Mike Johnson",
+        "profile_picture_url": "https://...",
+        "strengths": ["fashion", "relationships"],
+        "struggles": ["career", "fitness"]
+      },
+      "status": "active",
+      "season_number": 1,
+      "current_season_start_date": "2025-11-18",
+      "current_season_end_date": "2025-12-16",
+      "mutual_goals": [],
+      "check_in_frequency": "3x_week",
+      "check_in_days": [1, 3, 5],
+      "communication_methods": ["text"],
+      "balance_score": 0.5,
+      "engagement_score": 1.0,
+      "last_interaction_at": "2025-11-18T10:30:00Z",
+      "created_at": "2025-11-18T10:30:00Z"
+    }
+  ],
+  "total": 1
+}
+```
+
+### Get Partnership Details
+```http
+GET /api/v1/partnerships/:id
+Authorization: Bearer <access_token>
+```
+
+**Authorization**: Only partnership members (user1 or user2) can access.
+
+**Response (200)**: Same as partnership object above
+
+**Error (403)**: Not a member of this partnership
+**Error (404)**: Partnership not found
+
+### Update Partnership Settings
+```http
+PATCH /api/v1/partnerships/:id/settings
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "check_in_frequency": "daily",
+  "check_in_days": [1, 2, 3, 4, 5],
+  "communication_methods": ["text", "voice", "photo"]
+}
+```
+
+**Authorization**: Only partnership members can update settings.
+
+**Validation Rules**:
+- `check_in_frequency`: "daily", "3x_week", or "weekly"
+- `check_in_days`: Array of integers 1-7 (Monday=1, Sunday=7)
+- `communication_methods`: Array containing "text", "voice", and/or "photo"
+
+**Response (200)**: Updated partnership object
+
+**Error (403)**: Not a member of this partnership
+**Error (422)**: Validation error
+
+### End Partnership
+```http
+POST /api/v1/partnerships/:id/end
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "reason": "Completed our goals together!",
+  "give_feedback": true
+}
+```
+
+**Authorization**: Only partnership members can end the partnership.
+
+**Effects**:
+- Sets partnership status to `completed`
+- Decrements `active_partnerships_count` for both users
+- Sets `is_seeking_partner` to `true` if count < 3
+
+**Response (204)**: No content
+
+**Error (400)**: Partnership already ended
+**Error (403)**: Not a member of this partnership
+
+### Get Partnership Stats
+```http
+GET /api/v1/partnerships/:id/stats
+Authorization: Bearer <access_token>
+```
+
+**Authorization**: Only partnership members can access stats.
+
+**Response (200)**:
+```json
+{
+  "partnership_id": "partnership-uuid",
+  "season_number": 1,
+  "days_active": 14,
+  "total_check_ins": 12,
+  "user_check_ins": 6,
+  "partner_check_ins": 6,
+  "total_goals": 4,
+  "completed_goals": 2,
+  "balance_score": 0.5,
+  "engagement_score": 0.85,
+  "current_streak": 5,
+  "longest_streak": 5,
+  "last_interaction_at": "2025-11-18T10:30:00Z"
+}
+```
+
+**Metrics Explained**:
+- `days_active`: Days since partnership started
+- `user_check_ins`: Your check-in count
+- `partner_check_ins`: Partner's check-in count
+- `balance_score`: 0.0-1.0, measures reciprocity (0.5 = balanced)
+- `engagement_score`: 0.0-1.0, measures overall engagement
+- `current_streak`: Current consecutive check-in streak
+- `longest_streak`: Longest streak achieved
+
+**Error (403)**: Not a member of this partnership
+**Error (404)**: Partnership not found
 
 ---
 
@@ -468,4 +604,4 @@ Visit `http://localhost:8000/docs` when running in development mode.
 ---
 
 **Last Updated**: 2025-11-18
-**Test Coverage**: 51/51 tests passing ✅
+**Test Coverage**: 64/64 tests passing ✅ (19 unit + 45 integration)
