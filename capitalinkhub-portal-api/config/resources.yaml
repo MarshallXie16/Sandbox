@@ -1,0 +1,49 @@
+# Portal Resources Configuration
+# This file can be used to seed resources into the database
+# Alternatively, resources can be managed via database directly
+
+resources:
+  - slug: "exit-ready-guide"
+    title: "Exit Ready Guide"
+    description: "A comprehensive guide for business owners preparing to sell their company"
+    category: "seller"
+    resource_type: "pdf"
+    file_url: "https://cdn.example.com/resources/exit-ready-guide.pdf"
+    file_size: 2048576  # bytes
+    is_gated: true
+
+  - slug: "buyer-checklist"
+    title: "Buyer's Acquisition Checklist"
+    description: "Essential checklist for buyers evaluating acquisition targets"
+    category: "buyer"
+    resource_type: "pdf"
+    file_url: "https://cdn.example.com/resources/buyer-checklist.pdf"
+    file_size: 1024000
+    is_gated: true
+
+  - slug: "valuation-template"
+    title: "Business Valuation Template"
+    description: "Excel template for preliminary business valuation"
+    category: "general"
+    resource_type: "template"
+    file_url: "https://cdn.example.com/resources/valuation-template.xlsx"
+    file_size: 512000
+    is_gated: true
+
+  - slug: "due-diligence-guide"
+    title: "Due Diligence Guide"
+    description: "Complete guide to conducting due diligence on acquisition targets"
+    category: "buyer"
+    resource_type: "pdf"
+    file_url: "https://cdn.example.com/resources/due-diligence-guide.pdf"
+    file_size: 3145728
+    is_gated: true
+
+  - slug: "seller-presentation-template"
+    title: "Seller Presentation Template"
+    description: "PowerPoint template for creating compelling seller presentations"
+    category: "seller"
+    resource_type: "template"
+    file_url: "https://cdn.example.com/resources/seller-presentation.pptx"
+    file_size: 2097152
+    is_gated: true
