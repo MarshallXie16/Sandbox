@@ -1,0 +1,228 @@
+# Field mappings configuration for HubSpot ↔ IndieStack synchronization
+#
+# This file defines how fields are mapped between IndieStack CRM and HubSpot.
+#
+# Structure:
+#   entity_type:
+#     properties:
+#       field_name:
+#         indie_field: <field or path in IndieStack>
+#         hubspot_property: <property name in HubSpot>
+#         direction: <indie_to_hubspot | hubspot_to_indie | bidirectional>
+#         transform: <optional transformation function name>
+#
+# Direction options:
+#   - indie_to_hubspot: Only sync from IndieStack to HubSpot
+#   - hubspot_to_indie: Only sync from HubSpot to IndieStack
+#   - bidirectional: Sync in both directions (with conflict resolution)
+#
+# Indie field paths:
+#   - Simple fields: first_name, email
+#   - Nested JSON fields: details.engagement_score, metadata.source
+
+contacts:
+  properties:
+    first_name:
+      indie_field: first_name
+      hubspot_property: firstname
+      direction: bidirectional
+
+    last_name:
+      indie_field: last_name
+      hubspot_property: lastname
+      direction: bidirectional
+
+    primary_email:
+      indie_field: primary_email
+      hubspot_property: email
+      direction: bidirectional
+
+    phone:
+      indie_field: phone
+      hubspot_property: phone
+      direction: bidirectional
+
+    # Custom fields - IndieStack → HubSpot only
+    category:
+      indie_field: category
+      hubspot_property: cl_category
+      direction: indie_to_hubspot
+
+    engagement_score:
+      indie_field: details.engagement_score
+      hubspot_property: cl_engagement_score
+      direction: indie_to_hubspot
+
+    lifecycle_stage:
+      indie_field: lifecycle_stage
+      hubspot_property: lifecyclestage
+      direction: bidirectional
+
+    lead_source:
+      indie_field: source
+      hubspot_property: cl_lead_source
+      direction: indie_to_hubspot
+
+    job_title:
+      indie_field: job_title
+      hubspot_property: jobtitle
+      direction: bidirectional
+
+    # Timestamps
+    created_date:
+      indie_field: created_at
+      hubspot_property: createdate
+      direction: indie_to_hubspot
+      transform: datetime_to_timestamp
+
+    last_modified_date:
+      indie_field: updated_at
+      hubspot_property: lastmodifieddate
+      direction: indie_to_hubspot
+      transform: datetime_to_timestamp
+
+companies:
+  properties:
+    name:
+      indie_field: name
+      hubspot_property: name
+      direction: bidirectional
+
+    website:
+      indie_field: website
+      hubspot_property: domain
+      direction: bidirectional
+
+    industry:
+      indie_field: industry
+      hubspot_property: industry
+      direction: bidirectional
+
+    phone:
+      indie_field: phone
+      hubspot_property: phone
+      direction: bidirectional
+
+    # Custom fields
+    revenue:
+      indie_field: revenue
+      hubspot_property: annualrevenue
+      direction: indie_to_hubspot
+
+    employee_count:
+      indie_field: employee_count
+      hubspot_property: numberofemployees
+      direction: bidirectional
+
+    company_type:
+      indie_field: company_type
+      hubspot_property: cl_company_type
+      direction: indie_to_hubspot
+
+    address:
+      indie_field: address
+      hubspot_property: address
+      direction: bidirectional
+
+    city:
+      indie_field: city
+      hubspot_property: city
+      direction: bidirectional
+
+    state:
+      indie_field: state
+      hubspot_property: state
+      direction: bidirectional
+
+    country:
+      indie_field: country
+      hubspot_property: country
+      direction: bidirectional
+
+    postal_code:
+      indie_field: postal_code
+      hubspot_property: zip
+      direction: bidirectional
+
+    # Timestamps
+    created_date:
+      indie_field: created_at
+      hubspot_property: createdate
+      direction: indie_to_hubspot
+      transform: datetime_to_timestamp
+
+deals:
+  properties:
+    name:
+      indie_field: name
+      hubspot_property: dealname
+      direction: bidirectional
+
+    amount:
+      indie_field: amount
+      hubspot_property: amount
+      direction: bidirectional
+
+    close_date:
+      indie_field: close_date
+      hubspot_property: closedate
+      direction: bidirectional
+      transform: date_to_timestamp
+
+    # Stage mapping - IndieStack → HubSpot
+    stage:
+      indie_field: stage_id
+      hubspot_property: dealstage
+      direction: indie_to_hubspot
+      transform: stage_id_to_hubspot_stage
+
+    pipeline:
+      indie_field: pipeline_id
+      hubspot_property: pipeline
+      direction: indie_to_hubspot
+      transform: pipeline_id_to_hubspot_pipeline
+
+    # Custom fields
+    deal_type:
+      indie_field: deal_type
+      hubspot_property: cl_deal_type
+      direction: indie_to_hubspot
+
+    priority:
+      indie_field: priority
+      hubspot_property: cl_priority
+      direction: indie_to_hubspot
+
+    probability:
+      indie_field: probability
+      hubspot_property: cl_probability
+      direction: bidirectional
+
+    description:
+      indie_field: description
+      hubspot_property: description
+      direction: bidirectional
+
+    # Timestamps
+    created_date:
+      indie_field: created_at
+      hubspot_property: createdate
+      direction: indie_to_hubspot
+      transform: datetime_to_timestamp
+
+# Association mappings
+associations:
+  contact_to_company:
+    indie_field: company_id
+    hubspot_type: contact_to_company
+    description: "Link contacts to their primary company"
+
+  contact_to_deal:
+    indie_field: contacts  # Array of contact IDs on deal
+    hubspot_type: contact_to_deal
+    description: "Link deals to associated contacts"
+
+  company_to_deal:
+    indie_field: company_id
+    hubspot_type: company_to_deal
+    description: "Link deals to their primary company"
