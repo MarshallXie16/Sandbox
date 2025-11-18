@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import init_db, close_db
-from app.api.v1 import auth, users, profiles, matching, partnerships
+from app.api.v1 import auth, users, profiles, matching, partnerships, goals, checkins
 
 # Create FastAPI app
 app = FastAPI(
@@ -59,6 +59,8 @@ app.include_router(users.router, prefix=f"/api/{settings.API_VERSION}", tags=["U
 app.include_router(profiles.router, prefix=f"/api/{settings.API_VERSION}", tags=["Profiles"])
 app.include_router(matching.router, prefix=f"/api/{settings.API_VERSION}", tags=["Matching"])
 app.include_router(partnerships.router, prefix=f"/api/{settings.API_VERSION}", tags=["Partnerships"])
+app.include_router(goals.router, prefix=f"/api/{settings.API_VERSION}", tags=["Goals"])
+app.include_router(checkins.router, prefix=f"/api/{settings.API_VERSION}", tags=["Check-ins"])
 
 
 if __name__ == "__main__":

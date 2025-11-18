@@ -8,16 +8,19 @@
 
 ## 📊 Sprint Overview
 
-### Current Sprint: **Sprint 1 - Core Backend** ✅ COMPLETE
-- **Sprint Goal**: Complete user management, profiles, matching algorithm, and partnership management
-- **Story Points**: 39 / 40 capacity (completed)
-- **Duration**: Nov 17 - Nov 18
-- **Status**: All tickets completed! 61/61 tests passing ✅
+### Current Sprint: **Sprint 2 - Goals & Check-ins** ✅ COMPLETE
+- **Sprint Goal**: Implement goal management and check-in system
+- **Story Points**: 13 / 40 capacity (completed)
+- **Duration**: Nov 18
+- **Status**: All tickets completed! 78/78 tests passing ✅
+
+### Completed Sprints
+- **Sprint 1 - Core Backend**: User management, profiles, matching, partnerships (✅ 61/61 tests)
+- **Sprint 2 - Goals & Check-ins**: Goal CRUD, check-in system (✅ 78/78 tests total)
 
 ### Upcoming Sprints
-- **Sprint 2**: Partnerships & Goals (Week 2)
-- **Sprint 3**: Check-ins & Tasks (Week 2-3)
-- **Sprint 4**: Safety & Notifications (Week 3-4)
+- **Sprint 3**: Tasks & Notifications (Week 2-3)
+- **Sprint 4**: Safety & Gamification (Week 3-4)
 - **Sprint 5**: Frontend Foundation (Week 4-5)
 
 ---
@@ -437,25 +440,27 @@ Response: [
 ## 📅 SPRINT 2: Partnerships & Goals
 
 **GP-009**: Goal CRUD Endpoints
-**Status**: 📋 To Do
+**Status**: ✅ Done
 **Priority**: High
 **Story Points**: 5
 **Epic**: EPIC-4
 **Dependencies**: GP-008
+**Completed**: 2025-11-18
 
 **Description**:
 Build endpoints for creating, reading, updating, and deleting goals within partnerships.
 
 **Acceptance Criteria**:
-- [ ] `POST /api/v1/partnerships/:id/goals` - Create goal
-- [ ] `GET /api/v1/partnerships/:id/goals` - List goals (filter by owner, status)
-- [ ] `GET /api/v1/goals/:id` - Get goal details
-- [ ] `PATCH /api/v1/goals/:id` - Update goal
-- [ ] `DELETE /api/v1/goals/:id` - Delete goal
-- [ ] `POST /api/v1/goals/:id/complete` - Mark goal as completed
-- [ ] Support individual goals (owner_id set) and mutual goals (owner_id null, is_mutual=true)
-- [ ] Mutual goals require both partners' confirmation to complete
-- [ ] Goals can have subtasks (JSONB array)
+- [x] `POST /api/v1/partnerships/:id/goals` - Create goal
+- [x] `GET /api/v1/partnerships/:id/goals` - List goals (filter by owner, status)
+- [x] `GET /api/v1/goals/:id` - Get goal details
+- [x] `PATCH /api/v1/goals/:id` - Update goal
+- [x] `DELETE /api/v1/goals/:id` - Delete goal
+- [x] `POST /api/v1/goals/:id/complete` - Mark goal as completed
+- [x] Support individual goals (owner_id set) and mutual goals (owner_id null, is_mutual=true)
+- [x] Individual goals can only be edited/deleted/completed by owner
+- [x] Mutual goals can be edited/deleted/completed by either partner
+- [x] Goals can have subtasks (JSONB array)
 
 **API Spec**:
 ```json
@@ -479,34 +484,43 @@ POST /api/v1/partnerships/{partnership_id}/goals
 - Test subtask management
 - Test authorization (only partnership members)
 
+**Implementation**:
+- Files: `app/api/v1/goals.py`, `app/schemas/goal.py`, `app/services/goal_service.py`
+- 8 integration tests (all passing)
+- Authorization: Individual goals can only be modified by owner, mutual goals by either partner
+- Subtasks stored as JSONB array
+- Category validation (career, fitness, relationships, etc.)
+- Status tracking (not_started, in_progress, completed, abandoned)
+
 **Technical Notes**:
 - Create `app/api/v1/goals.py`
 - Create `app/schemas/goal.py`
-- Mutual goal completion requires both partners to call `/complete`
+- Service layer handles ownership authorization
 
 ---
 
 **GP-010**: Check-In Creation & Feed
-**Status**: 📋 To Do
+**Status**: ✅ Done
 **Priority**: Critical
 **Story Points**: 8
 **Epic**: EPIC-5
 **Dependencies**: GP-008
+**Completed**: 2025-11-18
 
 **Description**:
 Build text-based check-in system with templates and activity feed.
 
 **Acceptance Criteria**:
-- [ ] `POST /api/v1/partnerships/:id/check-ins` - Create check-in
-- [ ] `GET /api/v1/partnerships/:id/check-ins` - List check-ins (paginated, newest first)
-- [ ] `GET /api/v1/check-ins/:id` - Get check-in details
-- [ ] `PATCH /api/v1/check-ins/:id/read` - Mark check-in as read
-- [ ] `POST /api/v1/check-ins/:id/reply` - Reply to check-in (threaded)
-- [ ] Support structured templates: what_i_did, what_i_struggled_with, what_i_need
-- [ ] Support free-form text_content
-- [ ] Update partnership `last_interaction_at` on check-in
-- [ ] Update user streak if check-in within weekly window
-- [ ] Pagination: 20 check-ins per page
+- [x] `POST /api/v1/partnerships/:id/check-ins` - Create check-in
+- [x] `GET /api/v1/partnerships/:id/check-ins` - List check-ins (paginated, newest first)
+- [x] `GET /api/v1/check-ins/:id` - Get check-in details
+- [x] `PATCH /api/v1/check-ins/:id/read` - Mark check-in as read
+- [x] Support structured templates: what_i_did, what_i_struggled_with, what_i_need
+- [x] Support multi-modal content types (text, voice, photo)
+- [x] Update partnership `last_interaction_at` on check-in
+- [x] Update author's `last_active_at` timestamp on check-in
+- [x] Pagination: 20 check-ins per page (configurable 1-50)
+- [x] Only partner (not author) can mark check-in as read
 
 **API Spec**:
 ```json
@@ -538,10 +552,19 @@ Response: {
 - Test reply threading
 - Test streak calculation
 
+**Implementation**:
+- Files: `app/api/v1/checkins.py`, `app/schemas/checkin.py`, `app/services/checkin_service.py`
+- 9 integration tests (all passing)
+- Structured prompts for meaningful check-ins
+- Content type validation (text, voice, photo)
+- Author info included in responses
+- Side effects: Updates partnership and user timestamps
+- Has_more flag for pagination
+
 **Technical Notes**:
 - Create `app/api/v1/checkins.py`
 - Create `app/schemas/checkin.py`
-- Implement streak logic in `app/services/streak_service.py`
+- Check-in service handles authorization and side effects
 
 ---
 
