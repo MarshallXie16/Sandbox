@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Capitalink Analytics{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 2rem; color: #2c3e50;">Analytics Dashboard</h1>
+
+<!-- CRM Overview -->
+<div class="section">
+    <h2>CRM Overview</h2>
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <h3>Total Contacts</h3>
+            <div class="kpi-value">{{ crm.total_contacts }}</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Sellers</h3>
+            <div class="kpi-value">{{ crm.total_sellers }}</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Buyers</h3>
+            <div class="kpi-value">{{ crm.total_buyers }}</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Companies</h3>
+            <div class="kpi-value">{{ crm.total_companies }}</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Total Listings</h3>
+            <div class="kpi-value">{{ crm.total_listings }}</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Active Listings</h3>
+            <div class="kpi-value">{{ crm.active_listings }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Exit Ready Summary -->
+<div class="section">
+    <h2>Exit Ready Pipeline</h2>
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <h3>Total Cases</h3>
+            <div class="kpi-value">{{ exit_ready.total_cases }}</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for status, count in exit_ready.by_status.items() %}
+            <tr>
+                <td>{{ status|replace('_', ' ')|title }}</td>
+                <td><strong>{{ count }}</strong></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p style="margin-top: 1rem;">
+        <a href="/dashboard/exit-ready" style="color: #3498db; text-decoration: none;">View detailed Exit Ready analytics →</a>
+    </p>
+</div>
+
+<!-- Facilitator Summary -->
+<div class="section">
+    <h2>Facilitator Engagements</h2>
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <h3>Total Engagements</h3>
+            <div class="kpi-value">{{ facilitator.total_engagements }}</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Total Revenue</h3>
+            <div class="kpi-value">${{ "{:,.2f}".format(revenue.total_revenue) }}</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Offer Fees</h3>
+            <div class="kpi-value">${{ "{:,.2f}".format(revenue.total_offer_fees) }}</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Success Fees (Net)</h3>
+            <div class="kpi-value">${{ "{:,.2f}".format(revenue.total_success_fee_net) }}</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Closed Success</h3>
+            <div class="kpi-value">{{ revenue.closed_success_count }}</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for status, count in facilitator.by_status.items() %}
+            <tr>
+                <td>{{ status|replace('_', ' ')|title }}</td>
+                <td><strong>{{ count }}</strong></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p style="margin-top: 1rem;">
+        <a href="/dashboard/facilitator" style="color: #3498db; text-decoration: none;">View detailed Facilitator analytics →</a>
+    </p>
+</div>
+
+<p class="timestamp">Last updated: {{ timestamp }}</p>
+{% endblock %}

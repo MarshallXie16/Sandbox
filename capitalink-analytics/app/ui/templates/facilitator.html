@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Facilitator Analytics - Capitalink Analytics{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 2rem; color: #2c3e50;">Facilitator Analytics</h1>
+
+<!-- Revenue Summary -->
+<div class="section">
+    <h2>Revenue Summary</h2>
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <h3>Total Revenue</h3>
+            <div class="kpi-value">${{ "{:,.2f}".format(revenue.total_revenue) }}</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Offer Fees</h3>
+            <div class="kpi-value">${{ "{:,.2f}".format(revenue.total_offer_fees) }}</div>
+            <div class="kpi-label">$5k per offer</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Success Fee (Gross)</h3>
+            <div class="kpi-value">${{ "{:,.2f}".format(revenue.total_success_fee_gross) }}</div>
+            <div class="kpi-label">5% of sale price</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Success Fee (Net)</h3>
+            <div class="kpi-value">${{ "{:,.2f}".format(revenue.total_success_fee_net) }}</div>
+            <div class="kpi-label">After credits</div>
+        </div>
+        <div class="kpi-card">
+            <h3>Successful Closings</h3>
+            <div class="kpi-value">{{ revenue.closed_success_count }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Engagement Status -->
+<div class="section">
+    <h2>Engagement Status Distribution</h2>
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <h3>Total Engagements</h3>
+            <div class="kpi-value">{{ engagements.total_engagements }}</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Count</th>
+                <th>Percentage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for status, count in engagements.by_status.items() %}
+            <tr>
+                <td>
+                    {{ status|replace('_', ' ')|title }}
+                    {% if status == 'closed_success' %}
+                        <span class="badge badge-success">Success</span>
+                    {% elif status == 'active' %}
+                        <span class="badge badge-info">Active</span>
+                    {% elif status == 'closed_no_deal' or status == 'terminated' %}
+                        <span class="badge badge-secondary">Closed</span>
+                    {% endif %}
+                </td>
+                <td><strong>{{ count }}</strong></td>
+                <td>{{ "%.1f"|format((count / engagements.total_engagements * 100) if engagements.total_engagements > 0 else 0) }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Buyer Introduction Funnel -->
+<div class="section">
+    <h2>Buyer Introduction Funnel</h2>
+    <p style="color: #7f8c8d; margin-bottom: 1rem;">
+        Buyer progression through stages: Introduced → NDA → Teaser → Info Access → Offer → Closing
+    </p>
+
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <h3>Total Introduced</h3>
+            <div class="kpi-value">{{ funnel.total_introduced_buyers }}</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Stage</th>
+                <th>Count</th>
+                <th>Conversion Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stage in funnel.funnel_stages %}
+            <tr>
+                <td>{{ stage.stage|replace('_', ' ')|title }}</td>
+                <td><strong>{{ stage.count }}</strong></td>
+                <td>
+                    {% if stage.conversion_rate is not none %}
+                        {{ "%.1f"|format(stage.conversion_rate) }}%
+                    {% else %}
+                        <span style="color: #95a5a6;">-</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<p class="timestamp">Last updated: {{ timestamp }}</p>
+{% endblock %}
